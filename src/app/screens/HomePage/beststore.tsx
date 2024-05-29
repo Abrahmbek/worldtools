@@ -3,6 +3,7 @@ import "../../css/shop.css";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Swiper, SwiperSlide } from "swiper/react";
+//import  BestStore from "../HomePage/"; //this
 import SwiperCore, { Navigation, Autoplay, Pagination } from "swiper";
 import React from "react";
 import { Height } from "@mui/icons-material";

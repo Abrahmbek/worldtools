@@ -7,7 +7,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Rating from "@mui/material/Rating";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import Marginer from "../../components/marginer/index.tsx";
+import Marginer from "../../components/marginer/index";    //this
 import React from "react";
 const chosen_list = Array.from(Array(3).keys());
 export function ChosenProduct() {

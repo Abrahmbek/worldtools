@@ -1,4 +1,4 @@
-import { Events } from "../event.tsx";
+import { Events } from "../event"; //this
 import { Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
@@ -74,8 +74,8 @@ export function NavbarProduct(props: any) {
               </NavLink>
             </Box>
             <Box className="hover_line" onClick={props.SetPath}>
-              <NavLink to="/product" activeClassName="underline">
-                PRODUCT
+              <NavLink to="/member-page" activeClassName="underline">
+                MY PAGE
               </NavLink>
             </Box>
             <Box className="hover_line" onClick={props.SetPath}>

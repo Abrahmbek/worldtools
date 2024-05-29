@@ -1,6 +1,6 @@
 import { Box, Button, Container, Stack } from "@mui/material";
 import React from "react";
-import { BestStore } from "../HomePage/beststore.tsx";
+import { BestStore } from "../HomePage/beststore"; //this
 import "../../css/shop.css";
 
 import Checkbox from "@mui/material/Checkbox";
@@ -48,19 +48,22 @@ export function AllShop() {
             <div className={"shop_category"}>
               <h2>Category</h2>
               <Button className="category_box" variant={"contained"}>
-                boshqa
+                power-saws
               </Button>
               <Button className="category_box" variant={"contained"}>
-                desert
+                drills
               </Button>
               <Button className="category_box" variant={"contained"}>
-                ichimlik
+                grinders
               </Button>
               <Button className="category_box" variant={"contained"}>
-                salad
+                machine-tools
               </Button>
               <Button className="category_box" variant={"contained"}>
-                ovqatlar
+                air-tools
+              </Button>
+              <Button className="category_box" variant={"contained"}>
+                ect
               </Button>
             </div>
           </Box>

@@ -7,16 +7,17 @@ import "./app/css/navbar.css";
 import "./app/css/footer.css";
 
 import { Box, Container, Stack } from "@mui/material";
-import { HomePage } from "./app/screens/HomePage/index.tsx";
-import { ProductPage } from "./app/screens/ProductPage/index.tsx";
-import { BlogPage } from "./app/screens/BlogPage/index.tsx";
-import { OrderPage } from "./app/screens/OrderPage/index.tsx";
-import { Contact_usPage } from "./app/screens/Contact-usPage/index.tsx";
-import { ShopPage } from "./app/screens/ShopPage/index.tsx";
-import { NavbarHome } from "./app/components/header/index.tsx";
-import { NavbarProduct } from "./app/components/header/product.tsx";
-import { NavbarOther } from "./app/components/header/others.tsx";
-import { Footer } from "./app/components/footer/index.tsx";
+import { HomePage } from "./app/screens/HomePage/index"; //this
+
+import { BlogPage } from "./app/screens/BlogPage/index";
+import { OrderPage } from "./app/screens/OrderPage/index";
+import { Contact_usPage } from "./app/screens/Contact-usPage/index";
+import { ShopPage } from "./app/screens/ShopPage/index";
+import { NavbarHome } from "./app/components/header/index";
+import { NavbarProduct } from "./app/components/header/product";
+import { NavbarOther } from "./app/components/header/others";
+import { Footer } from "./app/components/footer/index";
+import { MembersPage } from "./app/screens/MembersPage/index"; //this
 
 function App() {
   const [path, SetPath] = useState();
@@ -35,8 +36,8 @@ function App() {
         <Route path="/shop">
           <ShopPage />
         </Route>
-        <Route path="/product">
-          <ProductPage />
+        <Route path="/member-page">
+          <MembersPage />
         </Route>
         <Route path="/blog">
           <BlogPage />

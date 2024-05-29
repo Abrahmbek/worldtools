@@ -3,13 +3,13 @@ import ReactDOM from "react-dom";
 
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import { store } from "./app/store.ts";
-import App from "./App.tsx";
+import { store } from "./app/store"; //this
+import App from "./App"; //this
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import "./index.css";
 
-import theme from "./app/MaterialTheme/index.ts";
+import theme from "./app/MaterialTheme/index"; //this
 
 //const container = document.getElementById("root")!;
 //const root = createRoot(container);

@@ -1,0 +1,541 @@
+/*  OTHERS PAGE */
+.my_page {
+  margin-top: -30px;
+  display: flex;
+  width: 100%;
+  height: auto;
+  background: #e7d3cc;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+}
+
+.my_page .my_page_frame {
+  margin-left: -40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.my_page .my_page_left {
+  margin-left: 30px;
+  width: 68%;
+  height: 100%;
+}
+
+.my_page .my_page_right {
+  margin-top: 60px;
+  margin-right: 30px;
+  width: 29.5%;
+  height: auto;
+}
+
+/* 1/2 Left Side */
+.my_page_left .menu_name {
+  width: 100%;
+  height: 70px;
+  flex-shrink: 0;
+  color: #120f0f;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 45px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border-bottom: 2px solid #2a0606;
+  margin-bottom: 20px;
+}
+
+/* POSTS STYLE (ARTICLES) */
+/* article box */
+.my_page .all_article_box {
+  width: 871px;
+  height: 175px;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #182226;
+  box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+}
+
+/* article_img_bg */
+.all_article_img {
+  width: 157px;
+  height: 155px;
+  flex-shrink: 0;
+  border-radius: 30px 0px 0px 30px;
+  background-size: cover;
+}
+
+.my_page .user_article_img {
+  width: 35px;
+  height: 35px;
+  border-radius: 35px;
+  margin-left: 172px;
+}
+
+/* 1: for art_user_info
+    .art_user_info {
+      display: flex;
+      flex-direction: row;
+    }
+     */
+
+.my_page .all_article_container {
+  margin-left: 15px;
+  width: 75%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+}
+.my_page .art_user_info img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-size: cover;
+}
+
+.post_content .all_article_author_user {
+  margin-left: 10px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: #ffffff;
+}
+
+.post_content .all_article_title {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 33px;
+  color: #e3c08d;
+}
+
+.post_content .all_article_desc {
+  margin-top: 5px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 26px;
+  color: #ffffff;
+  padding: 0;
+  margin: 0;
+}
+
+.post_content .article_share {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.post_content .article_share_share_main {
+  color: rgb(255, 255, 255);
+  margin-left: 150px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  font-weight: 400;
+  flex-direction: row;
+  font-size: 1rem;
+  margin-bottom: 60px;
+}
+
+/*my_page_right*/
+
+.my_page {
+  width: auto;
+  min-height: 738px;
+  display: flex;
+  position: relative;
+}
+
+.my_page .my_page_right {
+  margin-left: 10px;
+  position: relative;
+  width: 372.58px;
+  height: 498px;
+  border-radius: 16px;
+  display: flex;
+  background: #fff;
+  flex-direction: column;
+  box-shadow: 0px 4px 16px 0px rgba(242, 189, 87, 0.04) inset,
+    0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset,
+    0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.my_page_right .order_info_box {
+  justify-content: space-between;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+}
+
+.my_page_right .settings_btn {
+  width: 18px;
+  height: 15px;
+  stroke-width: 2px;
+  stroke: #000;
+  display: flex;
+  margin-left: 220px;
+  margin-top: 20px;
+}
+.my_page_right .order_user_img {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.my_page_right .order_user_avatar {
+  width: 117px;
+  height: 112px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 30px;
+  margin-bottom: 0px;
+}
+
+.my_page_right .order_user_prof_img {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+  border-radius: 37px;
+  background: rgba(0, 0, 0, 0.33);
+  margin-left: 115px;
+  flex-direction: row;
+  display: flex;
+}
+
+.my_page_right .order_user_name {
+  font-family: "Commissioner";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 36px;
+  color: #08090d;
+}
+
+.my_page_right .order_user_prof {
+  font-family: "Commissioner";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 36px;
+  color: #a1a1a1;
+}
+
+.my_page_right .user_media_box {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 141.319px;
+  height: 20.318px;
+  margin-top: 10px;
+}
+.my_page_right .user_media_box:hover {
+  color: #01dbc2;
+  filter: drop-shadow(0 0 5px #01dbc2);
+}
+
+.my_page_right .user_media_box_follow {
+  position: relative;
+  flex-direction: row;
+  justify-content: space-evenly;
+
+  color: #616164;
+  font-family: DM Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.my_page_right .user_media_box_follow .follows {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.my_page_right .user_media_box .user_desc {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  color: #616164;
+  font-family: DM Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.my_page .my_page_menu {
+  margin-top: 40px;
+  width: 100%;
+  height: auto;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+  justify-content: space-between;
+}
+
+.my_page_right .menu_box {
+  width: 372.58px;
+  height: 50px;
+  border-radius: 20px;
+  background: #e3c08d;
+  margin-top: 11px;
+  align-items: center;
+  position: relative;
+  justify-content: center;
+  display: inline-flex;
+  box-shadow: 0px 4px 16px 0px rgba(242, 189, 87, 0.04) inset,
+    0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset,
+    0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+.my_page_right .menu_box:hover {
+  background: #01dbc2;
+}
+
+.my_page_menu .MuiTabs-flexContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+/* FOLLOWERS STYLES:  */
+
+.my_page .follow_box {
+  display: flex;
+  flex-direction: row;
+  height: 140px;
+  margin-bottom: 15px;
+
+  align-items: center;
+  border-radius: 17px;
+  background: linear-gradient(
+    180deg,
+    rgba(38, 112, 129, 0.9) 0%,
+    rgba(21, 61, 70, 0.9) 100%
+  );
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15),
+    3px 2px 9px 0px rgba(255, 255, 255, 0.25) inset;
+  padding: 0 90px 0 45px;
+}
+
+.my_page .my_followers {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.follow_box {
+  width: 100%;
+  height: 100%;
+}
+.follow_box .right_wrap_user {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.follow_box .name_wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.follow_box .username_text {
+  color: #fff;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-top: 38px;
+}
+
+.follow_box .name_text {
+  color: #fff;
+  font-family: Montserrat;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 9px;
+}
+
+.follow_box .following_already {
+  width: 160px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 26px;
+  background: #68c5cb;
+  box-shadow: 1px 4px 6px 0px rgba(211, 211, 211, 0.25),
+    0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset;
+
+  border: 1px solid #fff;
+}
+
+.follow_box .following_already span {
+  color: #fff;
+  font-family: "Montserrat";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.follow_box .follow_btn {
+  width: 160px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 26px;
+  border: 1px solid #fff;
+  background: #30945e;
+  box-shadow: 1px 4px 6px 0px rgba(211, 211, 211, 0.25),
+    0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset;
+  color: #fff;
+  font-family: "Montserrat";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.follow_box .follow_cancel_btn {
+  width: 185px;
+  height: 57px;
+  flex-shrink: 0;
+  border-radius: 26px;
+  border: 1px solid #fff;
+  background: #e81010;
+  box-shadow: 1px 4px 6px 0px rgba(211, 211, 211, 0.25),
+    0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset;
+  color: #fff;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+/* MY SETTINGS STYLE */
+
+.my_settings_page .member_media_frame {
+  width: 100%;
+  height: 120px;
+  border-radius: 5px;
+  background: #f6f6f6;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+}
+
+.my_settings_page .media_change_box {
+  margin-left: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.media_change_box span {
+  color: #140342;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-top: 10px;
+}
+
+.media_change_box p {
+  color: #4f547b;
+  font-family: Poppins;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin: 10px 0;
+}
+
+.media_change_box .up_del_box {
+  border-radius: 8px;
+  background: #d9d9d9;
+  width: 37px;
+  height: 37px;
+  flex-shrink: 0;
+}
+
+.my_settings_page .input_frame {
+  display: flex;
+  flex-direction: row;
+  margin-top: 25px;
+  /* width: 820px; */
+  justify-content: space-between;
+}
+
+.input_frame .log_input {
+  display: flex;
+  flex-direction: column;
+}
+
+.input_frame .spec_label {
+  color: #fff;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-bottom: 10px;
+}
+
+.input_frame .spec_input {
+  border-radius: 5px;
+  background: #f6f6f6;
+  padding: 15px 20px;
+  color: #4f547b;
+  font-family: Poppins;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.input_frame .mb_nick {
+  width: 820px;
+}
+
+.input_frame .short_input {
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+}
+
+.input_frame .long_input {
+  display: flex;
+  flex-direction: column;
+}
+
+.long_input .spec_textarea {
+  width: 820px;
+  height: 200px;
+  padding: 15px 20px;
+  color: #4f547b;
+  font-family: Poppins;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}

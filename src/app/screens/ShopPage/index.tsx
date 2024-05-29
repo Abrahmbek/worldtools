@@ -1,9 +1,9 @@
 import React from "react";
 import "../../css/homepage.css";
 import "../../css/shop.css";
-import { AllShop } from "./allshop.tsx";
-import { ChosenProduct } from "./chosenproduct.tsx";
-import { ShopHeader } from "./shopheader.tsx";
+import { AllShop } from "./allshop"; //this
+import { ChosenProduct } from "./chosenproduct"; //this
+import { ShopHeader } from "./shopheader"; //this
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 
 export function ShopPage() {

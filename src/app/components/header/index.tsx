@@ -73,8 +73,8 @@ export function NavbarHome(props: any) {
             </NavLink>
           </Box>
           <Box className="hover_line" onClick={props.SetPath}>
-            <NavLink to="/product" activeClassName="underline">
-              PRODUCT
+            <NavLink to="/member-page" activeClassName="underline">
+              MY PAGE
             </NavLink>
           </Box>
           <Box className="hover_line" onClick={props.SetPath}>

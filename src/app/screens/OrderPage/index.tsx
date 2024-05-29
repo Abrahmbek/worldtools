@@ -5,9 +5,9 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import PausedOrders from "../../components/order/pausedOrder.tsx";
-import ProcessOrders from "../../components/order/processOrder.tsx";
-import FinishedOrders from "../../components/order/finishedOrder.tsx";
+import PausedOrders from "../../components/order/pausedOrder"; //this
+import ProcessOrders from "../../components/order/processOrder";
+import FinishedOrders from "../../components/order/finishedOrder"; //this
 
 export function OrderPage() {
   /**INITIALIZATIONS */

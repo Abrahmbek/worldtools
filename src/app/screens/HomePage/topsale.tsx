@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack } from "@mui/material";
-import React from "react";
+import React, { useRef } from "react";
 
 import Card from "@mui/joy/Card";
 import CardCover from "@mui/joy/CardCover";
@@ -12,8 +12,69 @@ import { CardOverflow, IconButton } from "@mui/joy";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Favorite } from "@mui/icons-material";
 
-const sale_list = Array.from(Array(9).keys());
+// REDUX
+import { useSelector } from "react-redux";
+
+import { createSelector } from "reselect";
+import { Shop } from "../../../types/user";
+import { retrieveTopSaleShop } from "../../screens/HomePage/selector";
+import { serverApi } from "../../../lib/config";
+import assert from "assert";
+import { verifiedMemberData } from "../../apiServices/verify";
+import MemberApiService from "../../apiServices/memberApiService";
+import { Definer } from "../../../lib/Definer";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../../lib/sweetAlert";
+import { useHistory } from "react-router-dom";
+
+// REDUX SELECTOR
+const topSaleShopRetriever = createSelector(
+  retrieveTopSaleShop,
+  (topSaleShop) => ({
+    topSaleShop,
+  })
+);
+
+//const topSaleShop = Array.from(Array(9).keys());
 export function TopSale() {
+  /**INITIALIZATIONS */
+  const history = useHistory();
+  const refs: any = useRef([]);
+  const { topSaleShop } = useSelector(topSaleShopRetriever);
+  console.log("topsaleshops:::", topSaleShop);
+
+  /* HANDLERS*/
+  const chosenShopHandler = (id: string) => {
+    history.push(`/shop/${id}`);
+  };
+  /* Related for Like*/
+
+  const targetLikeTop = async (e: any, id: string) => {
+    try {
+      assert.ok(verifiedMemberData, Definer.auth_err1);
+
+      const memberService = new MemberApiService(),
+        like_result: any = await memberService.memberLikeTarget({
+          like_ref_id: id,
+          group_type: "member",
+        });
+      assert.ok(like_result, Definer.general_err1);
+
+      if (like_result.like_status > 0) {
+        e.target.style.fill = "red";
+        refs.current[like_result.like_ref_id].innerHTML++;
+      } else {
+        e.target.style.fill = "white";
+        refs.current[like_result.like_ref_id].innerHTML--;
+      }
+      sweetTopSmallSuccessAlert("success", 700, false);
+    } catch (err: any) {
+      console.log("targetLikeTop, EROOR:", err);
+      sweetErrorHandling(err).then();
+    }
+  };
   return (
     <div className="bestsale_frame">
       <Container>
@@ -24,15 +85,18 @@ export function TopSale() {
         >
           <Stack className="heading_content">
             <h1>
-              TopSale <span> Products</span>
+              TopSale <span> Shops</span>
             </h1>
           </Stack>
         </Stack>
         <Stack className="sale_wrapper">
-          {sale_list.map((ele, index) => {
+          {topSaleShop.map((ele: Shop) => {
+            const image_path = `${serverApi}/${ele.mb_image}`;
+            console.log("Imagess:::", ele);
             return (
-              <CssVarsProvider key={`${index}`}>
+              <CssVarsProvider key={ele._id}>
                 <Card
+                  onClick={() => chosenShopHandler(ele._id)}
                   className="sale_card"
                   sx={{
                     minHeight: 390,
@@ -45,7 +109,12 @@ export function TopSale() {
                   }}
                 >
                   <CardCover>
-                    <img src="/product/set1.webp" loading="lazy" alt="" />
+                    <img
+                      className="sale_wrap_img"
+                      src={image_path}
+                      loading="lazy"
+                      alt=""
+                    />
                   </CardCover>
 
                   <CardCover
@@ -66,7 +135,7 @@ export function TopSale() {
                       startDecorator={<LocationOnRoundedIcon />}
                       textColor="neutral.300"
                     >
-                      South Korea
+                      {ele.mb_address}
                     </Typography>
                   </CardContent>
                   <CardOverflow
@@ -98,8 +167,12 @@ export function TopSale() {
                       }}
                     >
                       <Favorite
+                        onClick={(e) => targetLikeTop(e, ele._id)}
                         style={{
-                          color: "red",
+                          fill:
+                            ele?.me_liked && ele?.me_liked[0]?.my_favorite
+                              ? "red"
+                              : "white",
                         }}
                       />
                     </IconButton>
@@ -114,7 +187,7 @@ export function TopSale() {
                         display: "flex",
                       }}
                     >
-                      12
+                      {ele.mb_views}
                       <VisibilityIcon
                         sx={{ fontsize: 20, marginLeft: "5px" }}
                       />
@@ -128,8 +201,13 @@ export function TopSale() {
                         display: "flex",
                       }}
                     >
-                      8
-                      <Favorite sx={{ fontsize: 20, marginLeft: "5px" }} />
+                      <div ref={(element) => (refs.current[ele._id] = element)}>
+                        {ele.mb_likes}
+                      </div>
+
+                      <Favorite
+                        sx={{ fontsize: 20, marginLeft: "5px", color: "red" }}
+                      />
                     </Typography>
                   </CardOverflow>
                 </Card>

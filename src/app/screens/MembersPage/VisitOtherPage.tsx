@@ -29,15 +29,171 @@ import assert from "assert";
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
+import {
+  setChosenMember,
+  setChosenMemberBoArticles,
+  setChosenSingleBoArticle,
+} from "./slice";
+import { Dispatch } from "@reduxjs/toolkit";
+import {
+  retrieveChosenMember,
+  retrieveChosenMemberBoArticles,
+  retrieveChosenSingleBoArticle,
+} from "./selector";
+import { Member } from "../../../types/user";
+import { BoArticle, SearchMemeberArticlesObj } from "../../../types/boArticle";
+import { useHistory } from "react-router-dom";
+import MemberApiService from "../../apiServices/memberApiService";
+import CommunityApiService from "../../apiServices/blogApiService";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../../lib/sweetAlert";
+import FollowApiService from "../../apiServices/followApiService";
+import { verifiedMemberData } from "../../apiServices/verify";
+import { serverApi } from "../../../lib/config";
+import { Definer } from "../../../lib/Definer";
 
 /** REDUX Slice */
-
+const actionDispatch = (dispach: Dispatch) => ({
+  setChosenMember: (data: Member) => dispach(setChosenMember(data)),
+  setChosenMemberBoArticles: (data: BoArticle[]) =>
+    dispach(setChosenMemberBoArticles(data)),
+  setChosenSingleBoArticle: (data: BoArticle) =>
+    dispach(setChosenSingleBoArticle(data)),
+});
 /** REDUX SELECTOR */
+const chosenMemberRetriever = createSelector(
+  retrieveChosenMember,
+  (chosenMember) => ({
+    chosenMember,
+  })
+);
+const chosenMemberBoArticlesRetriever = createSelector(
+  retrieveChosenMemberBoArticles,
+  (chosenMemberBoArticles) => ({
+    chosenMemberBoArticles,
+  })
+);
+const chosenSingleBoArticleRetriever = createSelector(
+  retrieveChosenSingleBoArticle,
+  (chosenSingleBoArticle) => ({
+    chosenSingleBoArticle,
+  })
+);
 
 export function VisitOtherPage(props: any) {
   /**INITIALIZATIONS */
 
+  const history = useHistory();
+  const { chosen_mb_id, chosen_art_id } = props;
+  const {
+    setChosenMember,
+    setChosenMemberBoArticles,
+    setChosenSingleBoArticle,
+  } = actionDispatch(useDispatch());
+  const { chosenMember } = useSelector(chosenMemberRetriever);
+  const { chosenMemberBoArticles } = useSelector(
+    chosenMemberBoArticlesRetriever
+  );
+  const { chosenSingleBoArticle } = useSelector(chosenSingleBoArticleRetriever);
+
   const [value, setValue] = React.useState("1");
+  const [memberArticleSearchObj, setMemberArticlesSearchObj] =
+    useState<SearchMemeberArticlesObj>({
+      mb_id: chosen_mb_id,
+      page: 1,
+      limit: 4,
+    });
+  const [articlesRebuild, setArticlesRebuild] = useState<Date>(new Date());
+  const [followRebuild, setFollowRebuild] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (chosen_mb_id === verifiedMemberData?._id) {
+      history.push("/member-page");
+    }
+    const communityService = new CommunityApiService();
+    if (chosen_art_id) {
+      communityService
+        .getChosenArticle(chosen_art_id)
+        .then((data) => {
+          setChosenSingleBoArticle(data);
+          setValue("4");
+        })
+        .catch((err) => console.log(err));
+    }
+    communityService
+      .getMemberCommunityArticles(memberArticleSearchObj)
+      .then((data) => setChosenMemberBoArticles(data))
+      .catch((err) => console.log(err));
+  }, [memberArticleSearchObj, chosen_mb_id, articlesRebuild]);
+
+  useEffect(() => {
+    if (chosen_mb_id === verifiedMemberData?._id) {
+      history.push("/member-page");
+    }
+    const memberService = new MemberApiService();
+    memberService
+      .getChosenMember(memberArticleSearchObj?.mb_id)
+      .then((data) => setChosenMember(data))
+      .catch((err) => console.log(err));
+  }, [verifiedMemberData, chosen_mb_id, followRebuild]);
+
+  /**  HANDLERS */
+  const handleChange = (event: any, newValue: string) => {
+    setValue(newValue);
+  };
+  const renderChosenArticleHandler = async (art_id: string) => {
+    try {
+      const communityService = new CommunityApiService();
+      communityService
+        .getChosenArticle(art_id)
+        .then((data) => {
+          setChosenSingleBoArticle(data);
+          setValue("4");
+        })
+        .catch((err) => console.log(err));
+    } catch (err: any) {
+      console.log(err);
+      sweetErrorHandling(err).then();
+    }
+  };
+
+  const subscribeHandler = async (e: any) => {
+    try {
+      assert.ok(verifiedMemberData, Definer.auth_err1);
+
+      const followService = new FollowApiService();
+      await followService.subscribe(e.target.value);
+
+      await sweetTopSmallSuccessAlert("subscribed successfully", 700, false);
+      setFollowRebuild(!followRebuild);
+    } catch (err: any) {
+      console.log(err);
+      sweetErrorHandling(err).then();
+    }
+  };
+
+  const unsubscribeHandler = async (e: any) => {
+    try {
+      assert.ok(verifiedMemberData, Definer.auth_err1);
+
+      const followService = new FollowApiService();
+      await followService.unsubscribe(e.target.value);
+
+      await sweetTopSmallSuccessAlert("unsubscribed successfully", 700, false);
+      setFollowRebuild(!followRebuild);
+    } catch (err: any) {
+      console.log(err);
+      sweetErrorHandling(err).then();
+    }
+  };
+
+  const handlePaginationChange = (event: any, value: number) => {
+    memberArticleSearchObj.page = value;
+    setMemberArticlesSearchObj({ ...memberArticleSearchObj });
+  };
+
   return (
     <div className="my_page">
       <Container maxWidth="lg" sx={{ mt: "50px", mb: "50px" }}>
@@ -52,13 +208,22 @@ export function VisitOtherPage(props: any) {
                 >
                   <div className="order_user_img">
                     <img
-                      src={"/auth/odamcha.svg"}
+                      src={
+                        chosenMember?.mb_image
+                          ? `${serverApi}/${chosenMember?.mb_image}`
+                          : "/auth/odamcha.svg"
+                      }
                       className={"order_user_avatar"}
                       alt="rasm"
                     />
                   </div>
-                  <span className="order_user_name">zarina</span>
-                  <span className="order_user_prof">user</span>
+                  <span className="order_user_name">
+                    {chosenMember?.mb_nick}
+                  </span>
+                  <span className="order_user_prof">
+                    {" "}
+                    {chosenMember?.mb_type}
+                  </span>
                 </Box>
                 <Box className="user_media_box">
                   <FacebookIcon />
@@ -73,26 +238,35 @@ export function VisitOtherPage(props: any) {
                   }}
                 >
                   <p className={"follows"}>
-                    Followers: {3}
-                    Following: {4}
+                    Followers: {chosenMember?.mb_subscriber_cnt}
+                    Following: {chosenMember?.mb_follow_cnt}
                   </p>
                 </Box>
-                <p className="user_desc">"qo'shimcha malumot kiritilmagan</p>
+                <p className="user_desc">
+                  {" "}
+                  {chosenMember?.mb_description ??
+                    "qo'shimcha malumot kiritilmagan"}
+                </p>
                 <Box
                   display={"flex"}
                   justifyContent={"flex-end"}
                   sx={{ mt: "10px" }}
                 >
-                  <TabList aria-label="lab API tabs example">
-                    {true ? (
+                  <TabList
+                    onChange={handleChange}
+                    aria-label="lab API tabs example"
+                  >
+                    {chosenMember?.me_followed &&
+                    chosenMember.me_followed[0]?.my_following ? (
                       <Tab
                         style={{ flexDirection: "column" }}
                         value={"4"}
                         component={() => (
                           <Button
-                            value={"4"}
+                            value={chosenMember?._id}
                             variant={"contained"}
                             style={{ backgroundColor: "#30945e" }}
+                            onClick={unsubscribeHandler}
                           >
                             UNFOLLOW
                           </Button>
@@ -104,8 +278,10 @@ export function VisitOtherPage(props: any) {
                         value={"4"}
                         component={() => (
                           <Button
+                            value={chosenMember?._id}
                             variant={"contained"}
                             style={{ backgroundColor: "#30945e" }}
+                            onClick={subscribeHandler}
                           >
                             FOLLOW
                           </Button>
@@ -117,7 +293,10 @@ export function VisitOtherPage(props: any) {
               </Box>
 
               <Box className="my_page_menu">
-                <TabList aria-label="lab API tabs example">
+                <TabList
+                  aria-label="lab API tabs example"
+                  onChange={handleChange}
+                >
                   <Tab
                     style={{ flexDirection: "column" }}
                     value={"1"}
@@ -156,7 +335,11 @@ export function VisitOtherPage(props: any) {
                 <TabPanel value={"1"}>
                   <Box className="menu_name"> Articles</Box>
                   <Box className="menu_content">
-                    <MemberPosts />
+                    <MemberPosts
+                      chosenMemberBoArticles={chosenMemberBoArticles}
+                      renderChosenArticleHandler={renderChosenArticleHandler}
+                      setArticlesRebuild={setArticlesRebuild}
+                    />
                     <Stack
                       sx={{ my: "40px" }}
                       direction={"row"}
@@ -165,8 +348,12 @@ export function VisitOtherPage(props: any) {
                     >
                       <Box className="bottom_box">
                         <Pagination
-                          count={3}
-                          page={2}
+                          count={
+                            memberArticleSearchObj.page >= 3
+                              ? memberArticleSearchObj.page + 1
+                              : 3
+                          }
+                          page={memberArticleSearchObj.page}
                           renderItem={(item) => (
                             <PaginationItem
                               components={{
@@ -177,6 +364,7 @@ export function VisitOtherPage(props: any) {
                               color={"secondary"}
                             />
                           )}
+                          onChange={handlePaginationChange}
                         />
                       </Box>
                     </Stack>
@@ -185,20 +373,30 @@ export function VisitOtherPage(props: any) {
                 <TabPanel value={"2"}>
                   <Box className={"menu_name"}>Followers</Box>
                   <Box className={"menu_content"}>
-                    <MemberFollowers actions_enabled={false} />
+                    <MemberFollowers
+                      setFollowRebuild={setFollowRebuild}
+                      followRebuild={followRebuild}
+                      mb_id={chosen_mb_id}
+                      actions_enabled={false}
+                    />
                   </Box>
                 </TabPanel>
                 <TabPanel value={"3"}>
                   <Box className={"menu_name"}>Following</Box>
                   <Box className={"menu_content"}>
-                    <MemberFollowing actions_enabled={false} />
+                    <MemberFollowing
+                      setFollowRebuild={setFollowRebuild}
+                      followRebuild={followRebuild}
+                      mb_id={chosen_mb_id}
+                      actions_enabled={false}
+                    />
                   </Box>
                 </TabPanel>
 
                 <TabPanel value={"4"}>
                   <Box className={"menu_name"}> Choosen Article </Box>
                   <Box className={"menu_content"}>
-                    <TViewer />
+                    <TViewer chosenSingleBoArticle={chosenSingleBoArticle} />
                   </Box>
                 </TabPanel>
               </Box>

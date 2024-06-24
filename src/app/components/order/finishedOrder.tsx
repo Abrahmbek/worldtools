@@ -3,21 +3,37 @@ import { Box, Container, Stack } from "@mui/material";
 import Button from "@mui/material/Button";
 import TabPanel from "@mui/lab/TabPanel";
 
-export default function FinishedOrders() {
+// REDUX
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { retrieveFinishedOrders } from "../../screens/OrderPage/selector";
+import { Order } from "../../../types/order";
+import { Product } from "../../../types/product";
+import { serverApi } from "../../../lib/config";
+
+/** REDUX SELECTOR */
+const finishedOrdersRetriever = createSelector(
+  retrieveFinishedOrders,
+  (finishedOrders) => ({
+    finishedOrders,
+  })
+);
+
+export default function FinishedOrders(props: any) {
   /**INITIALIZATIONS */
-  const pausedOrders = [
-    [1, 2, 3],
-    [1, 2, 3],
-  ];
+  const { finishedOrders } = useSelector(finishedOrdersRetriever);
   return (
     <TabPanel value={"3"}>
       <Stack>
-        {pausedOrders?.map((order) => {
+        {finishedOrders?.map((order) => {
           return (
             <Box className={"order_main_box"}>
               <Box className={"order_box_scroll"}>
-                {order.map((item) => {
-                  const image_path = "/product/set1.webp";
+                {order.order_items.map((item) => {
+                  const product: Product = order.product_data.filter(
+                    (ele) => ele._id === item.product_id
+                  )[0];
+                  const image_path = `${serverApi}/${product.product_images[0]}`;
                   return (
                     <Box className={"ordersName_price"}>
                       <img
@@ -25,21 +41,24 @@ export default function FinishedOrders() {
                         className={"order_product_Img"}
                         alt=""
                       />
-                      <p className={"title_product"}></p>
+                      <p className={"title_product"}>{product.product_name}</p>
                       <Box className={"priceBox"}>
-                        <p>$ 220 </p>
+                        <p>{item.item_price}</p>
                         <img
                           style={{ margin: "0 10px" }}
                           src={"/icons/close.svg"}
                           alt=""
                         />
-                        <p> 2 </p>
+                        <p> {item.item_quantity}</p>
                         <img
                           style={{ margin: "0 10px" }}
                           src={"/icons/pause.svg"}
                           alt=""
                         />
-                        <p style={{ marginLeft: "15px" }}> $ 221</p>
+                        <p style={{ marginLeft: "15px" }}>
+                          {" "}
+                          {item.item_price * item.item_quantity}
+                        </p>
                       </Box>
                     </Box>
                   );
@@ -49,7 +68,9 @@ export default function FinishedOrders() {
               <Box className={"total_price_box paused"}>
                 <div>
                   <span>Product price </span>
-                  <span>$ 220</span>
+                  <span>
+                    $ {order.order_total_amount - order.order_delivery_cost}
+                  </span>
                   <img
                     style={{ marginLeft: "35px" }}
                     src={"/icons/plus.svg"}
@@ -58,18 +79,14 @@ export default function FinishedOrders() {
                 </div>
                 <div>
                   <span>Delivery cost </span>
-                  <span>$ 10</span>
+                  <span>$ {order.order_delivery_cost}</span>
                 </div>
                 <div>
                   <span>Total price </span>
-                  <span>$ 250</span>
+                  <span>$ {order.order_total_amount}</span>
                 </div>
 
-                <div>
-                  <Button className="order_cancel">Cancel</Button>
-
-                  <Button className="order_pay">Order</Button>
-                </div>
+               
               </Box>
             </Box>
           );

@@ -1,0 +1,142 @@
+.container .container_form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15%;
+  margin-left: 38%;
+  width: 35rem;
+  height: 25rem;
+
+  background: repeating-conic-gradient(
+    from var(--a),
+    #01dbc2 0%,
+    #01dbc2 10%,
+    transparent 10%,
+    transparent 50%
+  );
+  animation: animate 6s linear infinite;
+  padding: 60px;
+}
+
+.container .container_form::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-conic-gradient(
+    from var(--a),
+    #01dbc2 0%,
+    #01dbc2 10%,
+    transparent 10%,
+    transparent 50%
+  );
+  animation: animate 6s linear infinite;
+  animation-delay: -1.5s;
+}
+.container .container_form::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border: 20px solid #222;
+  background: #333;
+}
+@property --a {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes animate {
+  0% {
+    --a: 0deg;
+  }
+  100% {
+    --a: 360deg;
+  }
+}
+
+.container .container_form .form {
+  position: relative;
+  z-index: 10;
+}
+
+.container .container_form .form h2 {
+  font-size: 2em;
+  color: #fff;
+  font-weight: 500;
+}
+.container .container_form .form .input_box {
+  position: relative;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.container .container_form .form .input_box input,
+.container .container_form .form .input_box textarea {
+  width: 450px;
+  padding: 5px 0;
+  font-size: 1.1em;
+  margin: 15px 0;
+  border: none;
+  background: transparent;
+  border-bottom: 2px solid #01dbc2;
+  color: #fff;
+  outline: none;
+  resize: none;
+}
+
+.container .container_form .form .input_box span {
+  position: absolute;
+  left: 0;
+  pointer-events: none;
+  padding: 5px 0;
+  margin: 10px 0;
+  font-size: 1.1em;
+  color: #fff;
+  transition: 0.5s;
+}
+
+.container .container_form .form .input_box input:focus ~ span,
+.container .container_form .form .input_box textarea:focus ~ span,
+.container .container_form .form .input_box input:valid ~ span,
+.container .container_form .form .input_box textarea:valid ~ span {
+  color: #01dbc2;
+  font-size: 1.2em;
+  transform: translateY(-24px);
+}
+
+.container .container_form .form .input_box .submit {
+  width: 100%;
+  background: #01dbc2;
+  color: #222;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 1.5em;
+  font-weight: 500;
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 992px) {
+  .container_form {
+    margin: 300px auto 0;
+    width: 700px;
+    height: 450px;
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 768px) {
+  .container_form {
+    margin: 200px auto 0;
+    width: 500px;
+    height: 350px;
+  }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 576px) {
+  .container_form {
+    margin: 100px auto 0;
+    width: 100%;
+    height: auto;
+  }
+}

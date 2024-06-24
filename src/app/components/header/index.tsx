@@ -1,4 +1,5 @@
-import { Stack } from "@mui/material";
+import { ListItemIcon, Menu, MenuItem, Stack } from "@mui/material";
+import { Logout } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -10,6 +11,7 @@ import { FaSearch } from "react-icons/fa";
 import { RiShoppingCartFill } from "react-icons/ri";
 import { FaUser } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
+import Basket from "../../screens/Cart/cart";
 
 export function NavbarHome(props: any) {
   const [isSearchActive, setSearchActive] = useState(false);
@@ -24,12 +26,12 @@ export function NavbarHome(props: any) {
     setNavbarActive(false);
   };
 
-  const toggleShoppingCart = () => {
-    setShoppingCartActive(!isShoppingCartActive);
-    setSearchActive(false);
-    setUserCartActive(false);
-    setNavbarActive(false);
-  };
+  // const toggleShoppingCart = () => {
+  //   setShoppingCartActive(!isShoppingCartActive);
+  //   setSearchActive(false);
+  //   setUserCartActive(false);
+  //   setNavbarActive(false);
+  // };
 
   const toggleUserCart = () => {
     setUserCartActive(!isUserCartActive);
@@ -68,15 +70,18 @@ export function NavbarHome(props: any) {
             <NavLink to="/">HOME</NavLink>
           </Box>
           <Box className="hover_line" onClick={props.SetPath}>
-            <NavLink to="/shop" activeClassName="underline">
+            <NavLink to="/shop/:" activeClassName="underline">
               SHOP
             </NavLink>
           </Box>
-          <Box className="hover_line" onClick={props.SetPath}>
-            <NavLink to="/member-page" activeClassName="underline">
-              MY PAGE
-            </NavLink>
-          </Box>
+          {props.verifiedMemberData ? (
+            <Box className="hover_line" onClick={props.SetPath}>
+              <NavLink to="/member-page" activeClassName="underline">
+                MY PAGE
+              </NavLink>
+            </Box>
+          ) : null}
+
           <Box className="hover_line" onClick={props.SetPath}>
             <NavLink to="/blog" activeClassName="underline">
               BLOG
@@ -87,11 +92,86 @@ export function NavbarHome(props: any) {
               CONTACT-US
             </NavLink>
           </Box>
-          <Box className="hover_line" onClick={props.SetPath}>
-            <NavLink to="/order" activeClassName="underline">
-              ORDER
-            </NavLink>
-          </Box>
+          {props.verifiedMemberData ? (
+            <Box className="hover_line" onClick={props.SetPath}>
+              <NavLink to="/order" activeClassName="underline">
+                ORDER
+              </NavLink>
+            </Box>
+          ) : null}
+          {!props.verifiedMemberData ? (
+            <Box
+              className="hover_line"
+              onClick={props.handleSignUpOpen}
+              style={{ cursor: "pointer" }}
+            >
+              SIGN-UP
+            </Box>
+          ) : (
+            <img
+              style={{
+                width: "48px",
+                height: "48px",
+                borderRadius: "24px",
+                cursor: "pointer",
+              }}
+              src={props.verifiedMemberData.mb_image}
+              alt=""
+              onClick={props.handleLogOutClick}
+            />
+          )}
+          <Menu
+            anchorEl={props.anchorEl}
+            open={props.open}
+            onClose={props.handleCloseLogOut}
+            onClick={props.handleCloseLogOut}
+            slotProps={{
+              // Use slotProps instead of PaperProps
+              paper: {
+                elevation: 0,
+                sx: {
+                  overflow: "visible",
+                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  mt: 1.5,
+                  "& .MuiAvatar-root": {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                    bgcolor: "#01dbc2",
+                  },
+                  "&:before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: "#01dbc2",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 0,
+                  },
+                },
+              },
+            }}
+            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          >
+            <MenuItem onClick={props.handleLogoutRequest}>
+              {/* onClick handler goes here */}
+              <ListItemIcon>
+                <Logout
+                  fontSize="small"
+                  style={{
+                    color: "blue",
+                    backgroundColor: "#01dbc2",
+                  }}
+                />
+              </ListItemIcon>
+              Log-Out
+            </MenuItem>
+          </Menu>
         </Stack>
 
         <Stack className="icons ">
@@ -103,12 +183,20 @@ export function NavbarHome(props: any) {
               <FaSearch />
             </NavLink>
           </Box>
-          <Box className="icon shopping-btn" onClick={toggleShoppingCart}>
-            <NavLink to="">
+          <Basket
+            cartItems={props.cartItems}
+            onAdd={props.onAdd}
+            onRemove={props.onRemove}
+            onDelete={props.onDelete}
+            onDeleteAll={props.onDeleteAll}
+            setOrderRebuild={props.setOrderRebuild}
+          />
+          {/* <Box className="icon shopping-btn" onClick={toggleShoppingCart}>
+            <NavLink to="/">
               <RiShoppingCartFill />
             </NavLink>
-          </Box>
-          <Box className="icon user-btn" onClick={toggleUserCart}>
+          </Box> */}
+          <Box className="icon user-btn" onClick={props.handleLoginOpen}>
             <NavLink to="">
               <FaUser />
             </NavLink>
@@ -129,7 +217,7 @@ export function NavbarHome(props: any) {
             <FaSearch />
           </form>
         </Box>
-        <Stack
+        {/* <Stack
           className={`shopping_cart ${isShoppingCartActive ? "active" : ""}`}
         >
           <Box className="cart_box">
@@ -158,8 +246,8 @@ export function NavbarHome(props: any) {
             <span> Total : $440 / -</span>
             <Button className="btn">checkout</Button>
           </Box>
-        </Stack>
-        <Stack className={`login_form ${isUserCartActive ? "active" : ""}`}>
+        </Stack> */}
+        {/* <Stack className={`login_form ${isUserCartActive ? "active" : ""}`}>
           <form action="login_form">
             <h3>Login Now</h3>
             <input
@@ -190,7 +278,7 @@ export function NavbarHome(props: any) {
               id=""
             />
           </form>
-        </Stack>
+        </Stack> */}
       </Stack>
     </div>
   );

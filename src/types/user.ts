@@ -1,3 +1,6 @@
+import { MeFollowed } from "./follow";
+import { Meliked } from "./product";
+
 export interface Shop {
   _id: string;
   mb_nick: string;
@@ -15,7 +18,7 @@ export interface Shop {
   mb_follow_cnt: number;
   mb_subscriber_cnt: number;
   createdAt: Date;
-  //me_liked: Meliked[];
+  me_liked: Meliked[];
 }
 
 export interface Member {
@@ -35,8 +38,8 @@ export interface Member {
   mb_follow_cnt: number;
   mb_subscriber_cnt: number;
   createdAt: Date;
-  //me_liked: Meliked[];
-  //me_followed: MeFollowed[];
+  me_liked: Meliked[];
+  me_followed: MeFollowed[];
 }
 
 export interface MemberUpdateData {

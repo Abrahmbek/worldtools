@@ -2,21 +2,88 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { Box, Stack } from "@mui/material";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-
+import { verifiedMemberData } from "../../apiServices/verify";
+import { MemberUpdateData } from "../../../types/user";
+import assert from "assert";
+import { Definer } from "../../../lib/Definer";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../../lib/sweetAlert";
+import MemberApiService from "../../apiServices/memberApiService";
 
 export function MySettings(props: any) {
   /**INITIALIZATIONS */
+  const [file, setFile] = useState(verifiedMemberData?.mb_image);
 
+  const [memberUpdate, setMemberUpdate] = useState<MemberUpdateData>({
+    mb_nick: "",
+    mb_phone: "",
+    mb_description: "",
+    mb_image: "",
+    mb_address: "",
+  });
 
   /**  HANDLERS */
 
- 
+  const changeMemberNickHandler = (e: any) => {
+    memberUpdate.mb_nick = e.target.value;
+    setMemberUpdate({ ...memberUpdate });
+  };
+  const changeMemberPhoneHandler = (e: any) => {
+    memberUpdate.mb_phone = e.target.value;
+    setMemberUpdate({ ...memberUpdate });
+  };
+  const changeMemberAddressHandler = (e: any) => {
+    memberUpdate.mb_address = e.target.value;
+    setMemberUpdate({ ...memberUpdate });
+  };
+  const changeMemberDescriptionHandler = (e: any) => {
+    memberUpdate.mb_description = e.target.value;
+    setMemberUpdate({ ...memberUpdate });
+  };
+
+  const handleImagePreviewer = (e: any) => {
+    try {
+      const file = e.target.files[0];
+
+      const fileType = file["type"],
+        validTypes = ["image/jpg", "image/png", "image/jpeg"];
+      assert.ok(validTypes.includes(fileType) && file, Definer.input_err2);
+
+      memberUpdate.mb_image = file;
+      setMemberUpdate({ ...memberUpdate });
+      setFile(URL.createObjectURL(file));
+    } catch (err) {
+      console.log(`"ERROR::: handleImagePreviewer ${err}`);
+      sweetErrorHandling(err).then();
+    }
+  };
+
+  const handleSubmitButton = async () => {
+    try {
+      const memberService = new MemberApiService();
+      const result = await memberService.updateMemberData(memberUpdate);
+
+      assert.ok(result, Definer.general_err1);
+      await sweetTopSmallSuccessAlert(
+        "Information modified successfully!",
+        700,
+        false
+      );
+
+      window.location.reload();
+    } catch (err) {
+      console.log(`"ERROR::: handleSubmitButton ${err}`);
+      sweetErrorHandling(err).then();
+    }
+  };
 
   return (
     <Stack className="my_settings_page">
       <Box className="member_media_frame">
         <img
-          // src={file}
+          src={file}
           className="mb_image"
           style={{ borderRadius: "50%" }}
           width={"100px"}
@@ -30,7 +97,7 @@ export function MySettings(props: any) {
             <Button
               component="label"
               style={{ minWidth: "0" }}
-              // onChange={handleImagePreviewer}
+              onChange={handleImagePreviewer}
             >
               <CloudDownloadIcon />
               <input type="file" hidden />
@@ -44,9 +111,9 @@ export function MySettings(props: any) {
           <input
             className="spec_input mb_nick"
             type="text"
-            // placeholder={verifiedMemberData?.mb_nick}
+            placeholder={verifiedMemberData?.mb_nick}
             name="mb_nick"
-            // onChange={changeMemberNickHandler}
+            onChange={changeMemberNickHandler}
           />
         </div>
       </Box>
@@ -56,9 +123,9 @@ export function MySettings(props: any) {
           <input
             className="spec_input mb_phone"
             type="text"
-            //placeholder={verifiedMemberData?.mb_phone}
+            placeholder={verifiedMemberData?.mb_phone}
             name="mb_phone"
-            // onChange={changeMemberPhoneHandler}
+            onChange={changeMemberPhoneHandler}
           />
         </div>
         <div className="short_input">
@@ -68,7 +135,7 @@ export function MySettings(props: any) {
             type="text"
             placeholder={"Address not found"}
             name="mb_address"
-            // onChange={changeMemberAddressHandler}
+            onChange={changeMemberAddressHandler}
           />
         </div>
       </Box>
@@ -79,15 +146,12 @@ export function MySettings(props: any) {
             className="spec_input mb_phone"
             placeholder={"not found"}
             name="mb_description"
-            //onChange={changeMemberDescriptionHandler}
+            onChange={changeMemberDescriptionHandler}
           />
         </div>
       </Box>
       <Box display={"flex"} justifyContent={"flex-end"} sx={{ mt: "25px" }}>
-        <Button
-          variant={"contained"}
-          //      onClick={handleSubmitButton}
-        >
+        <Button variant={"contained"} onClick={handleSubmitButton}>
           {" "}
           Save{" "}
         </Button>

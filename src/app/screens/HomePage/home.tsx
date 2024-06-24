@@ -11,7 +11,7 @@ export function Home() {
             <h3>World Power Tool </h3>
             <p>Free Shipping On World Wilde</p>
             <Box className="total">
-              <NavLink to="/shop">
+              <NavLink to="/shop/:">
                 <Button className="btn">Shop__Now</Button>
               </NavLink>
             </Box>

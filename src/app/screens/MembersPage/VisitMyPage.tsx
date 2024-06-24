@@ -10,28 +10,131 @@ import TabPanel from "@mui/lab/TabPanel";
 //import Tab from "@mui/material/Tab";
 import TabList from "@mui/lab/TabList";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { MemberPosts } from "./memberPosts";    //tjids
+import { MemberPosts } from "./memberPosts"; //tjids
 import { MemberFollowers } from "./memberFollowers";
 import { MemberFollowing } from "./memberFollowing";
-import { MySettings } from "./mySettings";  ///this
+import { MySettings } from "./mySettings"; ///this
 // Others
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { TuiEditor } from "../../components/tuiEditor/TuiEditor";  //this
-import TViewer from "../../components/tuiEditor/TViewer";  //this
+import { TuiEditor } from "../../components/tuiEditor/TuiEditor"; //this
+import TViewer from "../../components/tuiEditor/TViewer"; //this
 
 // REDUX
+import { useDispatch, useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import {
+  setChosenMember,
+  setChosenMemberBoArticles,
+  setChosenSingleBoArticle,
+} from "./slice";
+import { Dispatch } from "@reduxjs/toolkit";
+import {
+  retrieveChosenMember,
+  retrieveChosenMemberBoArticles,
+  retrieveChosenSingleBoArticle,
+} from "./selector";
+import { Member } from "../../../types/user";
+import { BoArticle, SearchMemeberArticlesObj } from "../../../types/boArticle";
+import {
+  sweetErrorHandling,
+  sweetFailureProvider,
+} from "../../../lib/sweetAlert";
+import CommunityApiService from "../../apiServices/blogApiService";
+import MemberApiService from "../../apiServices/memberApiService";
+import { verifiedMemberData } from "../../apiServices/verify";
+import { serverApi } from "../../../lib/config";
 
 /** REDUX Slice */
+const actionDispatch = (dispatch: Dispatch) => ({
+  setChosenMember: (data: Member) => dispatch(setChosenMember(data)),
+  setChosenMemberBoArticles: (data: BoArticle[]) =>
+    dispatch(setChosenMemberBoArticles(data)),
+  setChosenSingleBoArticle: (data: BoArticle) =>
+    dispatch(setChosenSingleBoArticle(data)),
+});
+/** REDUX SELECTOR */
+const chosenMemberRetriever = createSelector(
+  retrieveChosenMember,
+  (chosenMember) => ({
+    chosenMember,
+  })
+);
+const chosenMemberBoArticlesRetriever = createSelector(
+  retrieveChosenMemberBoArticles,
+  (chosenMemberBoArticles) => ({
+    chosenMemberBoArticles,
+  })
+);
+const chosenSingleBoArticleRetriever = createSelector(
+  retrieveChosenSingleBoArticle,
+  (chosenSingleBoArticle) => ({
+    chosenSingleBoArticle,
+  })
+);
 
 export function VisitMyPage(props: any) {
   /**INITIALIZATIONS */
-  const [value, setValue] = React.useState("1");
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const {
+    setChosenMember,
+    setChosenMemberBoArticles,
+    setChosenSingleBoArticle,
+  } = actionDispatch(useDispatch());
+  const { chosenMember } = useSelector(chosenMemberRetriever);
+  const { chosenMemberBoArticles } = useSelector(
+    chosenMemberBoArticlesRetriever
+  );
+  const { chosenSingleBoArticle } = useSelector(chosenSingleBoArticleRetriever);
+  const [value, setValue] = useState("1");
+  const [articlesRebuild, setArticlesRebuild] = useState<Date>(new Date());
+  const [followRebuild, setFollowRebuild] = useState<boolean>(false);
+  const [memberArticleSearchObj, setMemberArticlesSearchObj] =
+    useState<SearchMemeberArticlesObj>({ mb_id: "none", page: 1, limit: 4 });
+
+  useEffect(() => {
+    if (!verifiedMemberData) {
+      sweetFailureProvider("please Login first", true, true);
+    }
+
+    const communityService = new CommunityApiService();
+    const memberService = new MemberApiService();
+
+    communityService
+      .getMemberCommunityArticles(memberArticleSearchObj)
+      .then((data) => setChosenMemberBoArticles(data))
+      .catch((err) => console.log(err));
+
+    memberService
+      .getChosenMember(verifiedMemberData?._id)
+      .then((data) => setChosenMember(data))
+      .catch((err) => console.log(err));
+  }, [memberArticleSearchObj, articlesRebuild, followRebuild]);
+
+  /**  HANDLERS */
+  const handleChange = (event: any, newValue: string) => {
     setValue(newValue);
+  };
+  const handlePaginationChange = (event: any, value: number) => {
+    memberArticleSearchObj.page = value;
+    setMemberArticlesSearchObj({ ...memberArticleSearchObj });
+  };
+  const renderChosenArticleHandler = async (art_id: string) => {
+    try {
+      const communityService = new CommunityApiService();
+      communityService
+        .getChosenArticle(art_id)
+        .then((data) => {
+          setChosenSingleBoArticle(data);
+          setValue("5");
+        })
+        .catch((err) => console.log(err));
+    } catch (err: any) {
+      console.log(err);
+      sweetErrorHandling(err).then();
+    }
   };
   return (
     <div className="my_page">
@@ -50,13 +153,23 @@ export function VisitMyPage(props: any) {
                 >
                   <div className="order_user_img">
                     <img
-                      src={"/auth/odamcha.svg"}
+                      src={
+                        chosenMember?.mb_image
+                          ? `${serverApi}/${chosenMember?.mb_image}`
+                          : "/auth/odamcha.svg"
+                      }
                       className={"order_user_avatar"}
                       alt="rasm"
                     />
                   </div>
-                  <span className="order_user_name">zarina</span>
-                  <span className="order_user_prof">user</span>
+                  <span className="order_user_name">
+                    {" "}
+                    {verifiedMemberData?.mb_nick}
+                  </span>
+                  <span className="order_user_prof">
+                    {" "}
+                    {verifiedMemberData?.mb_type}
+                  </span>
                 </Box>
                 <Box className="user_media_box">
                   <FacebookIcon />
@@ -71,11 +184,15 @@ export function VisitMyPage(props: any) {
                   }}
                 >
                   <p className={"follows"}>
-                    Followers: {3} <br />
-                    Following: {2}
+                    Followers: {verifiedMemberData?.mb_subscriber_cnt} <br />
+                    Following: {verifiedMemberData?.mb_follow_cnt}
                   </p>
                 </Box>
-                <p className="user_desc">{"qo'shimcha malumot kiritilmagan"}</p>
+                <p className="user_desc">
+                  {" "}
+                  {verifiedMemberData?.mb_description ??
+                    "No additional information entered"}
+                </p>
                 <Box
                   display={"flex"}
                   justifyContent={"flex-end"}
@@ -89,6 +206,7 @@ export function VisitMyPage(props: any) {
                       borderColor: "divider",
                       width: "95%",
                     }}
+                    onChange={handleChange}
                     aria-label="Vertical tabs example"
                   >
                     <Tab
@@ -108,7 +226,10 @@ export function VisitMyPage(props: any) {
               </Box>
 
               <Box className="my_page_menu">
-                <TabList aria-label="lab API tabs example">
+                <TabList
+                  onChange={handleChange}
+                  aria-label="lab API tabs example"
+                >
                   <Tab
                     style={{
                       flexDirection: "column",
@@ -159,7 +280,11 @@ export function VisitMyPage(props: any) {
                 <TabPanel value={"1"}>
                   <Box className="menu_name">My Articles</Box>
                   <Box className="menu_content">
-                    <MemberPosts />
+                    <MemberPosts
+                      chosenMemberBoArticles={chosenMemberBoArticles}
+                      renderChosenArticleHandler={renderChosenArticleHandler}
+                      setArticlesRebuild={setArticlesRebuild}
+                    />
                     <Stack
                       sx={{ my: "40px" }}
                       direction={"row"}
@@ -168,8 +293,12 @@ export function VisitMyPage(props: any) {
                     >
                       <Box className="bottom_box">
                         <Pagination
-                          count={3}
-                          page={1}
+                          count={
+                            memberArticleSearchObj.page >= 3
+                              ? memberArticleSearchObj.page + 1
+                              : 3
+                          }
+                          page={memberArticleSearchObj.page}
                           renderItem={(item) => (
                             <PaginationItem
                               components={{
@@ -180,6 +309,7 @@ export function VisitMyPage(props: any) {
                               color={"secondary"}
                             />
                           )}
+                          onChange={handlePaginationChange}
                         />
                       </Box>
                     </Stack>
@@ -188,25 +318,38 @@ export function VisitMyPage(props: any) {
                 <TabPanel value={"2"}>
                   <Box className={"menu_name"}>Followers</Box>
                   <Box className={"menu_content"}>
-                    <MemberFollowers actions_enabled={true} />
+                    <MemberFollowers
+                      actions_enabled={true}
+                      setFollowRebuild={setFollowRebuild}
+                      followRebuild={followRebuild}
+                      mb_id={verifiedMemberData?._id}
+                    />
                   </Box>
                 </TabPanel>
                 <TabPanel value={"3"}>
                   <Box className={"menu_name"}>Following</Box>
                   <Box className={"menu_content"}>
-                    <MemberFollowing actions_enabled={true} />
+                    <MemberFollowing
+                      actions_enabled={true}
+                      setFollowRebuild={setFollowRebuild}
+                      followRebuild={followRebuild}
+                      mb_id={verifiedMemberData?._id}
+                    />
                   </Box>
                 </TabPanel>
                 <TabPanel value={"4"}>
                   <Box className={"menu_name"}>Add Article</Box>
                   <Box className={"write_content"}>
-                    <TuiEditor />
+                    <TuiEditor
+                      setValue={setValue}
+                      setArticlesRebuild={setArticlesRebuild}
+                    />
                   </Box>
                 </TabPanel>
                 <TabPanel value={"5"}>
                   <Box className={"menu_name"}> Choosen Article </Box>
                   <Box className={"menu_content"}>
-                    <TViewer />
+                    <TViewer chosenSingleBoArticle={chosenSingleBoArticle} />
                   </Box>
                 </TabPanel>
                 <TabPanel value={"6"}>

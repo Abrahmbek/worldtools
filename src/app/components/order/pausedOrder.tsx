@@ -3,14 +3,71 @@ import { Box, Stack } from "@mui/material";
 import Button from "@mui/material/Button";
 import TabPanel from "@mui/lab/TabPanel";
 
+// REDUX
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { retrievePausedOrders } from "../../screens/OrderPage/selector";
+import { Order } from "../../../types/order";
+import { serverApi } from "../../../lib/config";
+import { Product } from "../../../types/product";
+import {
+  sweetErrorHandling,
+  sweetFailureProvider,
+} from "../../../lib/sweetAlert";
+import OrderApiService from "../../apiServices/orderApiService";
+import { verifiedMemberData } from "../../apiServices/verify";
+
+/** REDUX SELECTOR */
+const pausedOrdersRetriever = createSelector(
+  retrievePausedOrders,
+  (pausedOrders) => ({
+    pausedOrders,
+  })
+);
+
 export default function PausedOrders(props: any) {
   /**INITIALIZATIONS */
-  const pausedOrders = [
-    [1, 2, 3],
-    [1, 2, 3],
-    [1, 2, 3],
-  ];
+  const { pausedOrders } = useSelector(pausedOrdersRetriever);
 
+  /**HANDLER */
+  const deleteOrderHandler = async (event: any) => {
+    try {
+      const order_id = event.target.value;
+      const data = { order_id: order_id, order_status: "DELETED" };
+
+      if (!verifiedMemberData) {
+        sweetFailureProvider("Please Login first", true);
+      }
+      let confirmation = window.confirm("Do you want to cancel the order?");
+      if (confirmation) {
+        const orderService = new OrderApiService();
+        await orderService.updateOrderStatus(data);
+        props.setOrderRebuild(new Date());
+      }
+    } catch (err) {
+      console.log("deleteorderhandler, ERROR", err);
+      sweetErrorHandling(err).then();
+    }
+  };
+  const processOrderHandler = async (event: any) => {
+    try {
+      const order_id = event.target.value;
+      const data = { order_id: order_id, order_status: "PROCESS" };
+
+      if (!verifiedMemberData) {
+        sweetFailureProvider("Please Login first", true);
+      }
+      let confirmation = window.confirm("Confirm the payment of the order?");
+      if (confirmation) {
+        const orderService = new OrderApiService();
+        await orderService.updateOrderStatus(data);
+        props.setOrderRebuild(new Date());
+      }
+    } catch (err) {
+      console.log("deleteorderhandler, ERROR", err);
+      sweetErrorHandling(err).then();
+    }
+  };
   return (
     <TabPanel value={"1"}>
       <Stack>
@@ -18,8 +75,11 @@ export default function PausedOrders(props: any) {
           return (
             <Box className={"order_main_box"}>
               <Box className={"order_box_scroll"}>
-                {order.map((item) => {
-                  const image_path = "/product/set1.webp";
+                {order.order_items.map((item) => {
+                  const product: Product = order.product_data.filter(
+                    (ele) => ele._id === item.product_id
+                  )[0];
+                  const image_path = `${serverApi}/${product.product_images[0]}`;
                   return (
                     <Box className={"ordersName_price"}>
                       <img
@@ -27,21 +87,24 @@ export default function PausedOrders(props: any) {
                         className={"order_product_Img"}
                         alt=""
                       />
-                      <p className={"title_product"}></p>
+                      <p className={"title_product"}>{product.product_name}</p>
                       <Box className={"priceBox"}>
-                        <p>$ 220 </p>
+                        <p>$ {item.item_price} </p>
                         <img
                           style={{ margin: "0 10px" }}
                           src={"/icons/close.svg"}
                           alt=""
                         />
-                        <p> 2 </p>
+                        <p> {item.item_quantity} </p>
                         <img
                           style={{ margin: "0 10px" }}
                           src={"/icons/pause.svg"}
                           alt=""
                         />
-                        <p style={{ marginLeft: "15px" }}> $ 221</p>
+                        <p style={{ marginLeft: "15px" }}>
+                          {" "}
+                          $ {item.item_price * item.item_quantity}
+                        </p>
                       </Box>
                     </Box>
                   );
@@ -51,7 +114,9 @@ export default function PausedOrders(props: any) {
               <Box className={"total_price_box paused"}>
                 <div>
                   <span>Product price </span>
-                  <span>$ 220</span>
+                  <span>
+                    $ {order.order_total_amount - order.order_delivery_cost}
+                  </span>
                   <img
                     style={{ marginLeft: "35px" }}
                     src={"/icons/plus.svg"}
@@ -60,17 +125,29 @@ export default function PausedOrders(props: any) {
                 </div>
                 <div>
                   <span>Delivery cost </span>
-                  <span>$ 10</span>
+                  <span>$ {order.order_delivery_cost}</span>
                 </div>
                 <div>
                   <span>Total price </span>
-                  <span>$ 250</span>
+                  <span>$ {order.order_total_amount}</span>
                 </div>
 
                 <div>
-                  <Button className="order_cancel">Cancel</Button>
+                  <Button
+                    className="order_cancel"
+                    value={order._id}
+                    onClick={deleteOrderHandler}
+                  >
+                    Cancel
+                  </Button>
 
-                  <Button className="order_pay">Order</Button>
+                  <Button
+                    className="order_pay"
+                    value={order._id}
+                    onClick={processOrderHandler}
+                  >
+                    Order
+                  </Button>
                 </div>
               </Box>
             </Box>

@@ -60,7 +60,7 @@ export function TuiEditor(props: any) {
       communityArticleData.art_subject = e.target.value;
       setCommunityArticleData({ ...communityArticleData });
     },
-    [communityArticleData.art_content]
+    [communityArticleData.art_subject]
   );
 
   const handleRegisterButton = async () => {
@@ -81,7 +81,7 @@ export function TuiEditor(props: any) {
       await sweetTopSmallSuccessAlert("Article is created successfully");
       props.setArticlesRebuild(new Date());
       props.setValue("1");
-      history.push("/member-page");
+      //history.push("/member-page");
     } catch (err) {
       console.log(`"ERROR:  uploadImage", ${err}`);
     }
@@ -157,7 +157,7 @@ export function TuiEditor(props: any) {
           },
         }}
         events={{
-          load: function (param: any) {},
+          load: function (params: any) {},
         }}
       />
       <Stack direction="row" justifyContent={"center"}>

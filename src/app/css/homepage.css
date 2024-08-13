@@ -415,6 +415,123 @@
   background-color: var(--orange);
   color: #fff;
 }
+
+/*topArticles */
+
+.articles_frame {
+  margin-top: 5rem;
+  width: 100%;
+  height: 100vh;
+  /* background: red; */
+  display: flex;
+
+  justify-content: center;
+  overflow: "hidden";
+}
+
+.articles_frame .articles_main {
+  /* background-color: aqua; */
+  border-radius: 7px;
+  /* box-shadow: 0 1px 18px 10px rgba(0, 0, 0, 0.1); */
+  overflow: hidden;
+  width: 100%;
+
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0 auto;
+}
+
+.articles_main .article_info_frame {
+  /* background-color: #e3c08d; */
+  height: 500px;
+}
+.articles_main .articles_img {
+  width: 368px;
+  height: 250px;
+  box-decoration-break: 0px;
+  /* background-image: url(/public/restaurant/ashley.jpg); */
+  background-size: cover;
+  object-fit: contain;
+  /* background-color: red; */
+  background-repeat: no-repeat;
+}
+.articles_main .articles_img img {
+  width: 100%;
+  height: 100%;
+}
+.articles_main .articles_text {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 1rem;
+  color: #e3c08d;
+  font-family: Roboto;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 42px;
+}
+.articles_frame .articles_desc {
+  /* background-color: teal; */
+  color: #000;
+  background-color: #eee;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+
+  border-radius: 0 0 10px 10px;
+  cursor: pointer;
+
+  /* background: #fff; */
+  /* background-color: rebeccapurple; */
+  /* border: 2px solid #02224a; */
+  width: 368px;
+  height: 150px;
+}
+.articles_frame .articles_bott {
+  /* background-color: red; */
+  width: 100%;
+  height: 100%;
+  /* display: flex; */
+  font-size: 20px;
+  justify-content: space-between;
+}
+.articles_frame .article_author {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem;
+}
+.articles_frame .article_author img {
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+.articles_frame .article_title {
+  margin: 0.5rem;
+}
+.articles_frame .article_right {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem;
+}
+.articles_frame .articleImg {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  border-radius: 10px 10px 0 0;
+  background-color: cover;
+  cursor: pointer;
+}
+
+.articles_frame .artTitle {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 1rem 1rem 1rem;
+  padding: 5px;
+  font-size: 18px;
+}
+
 /* Media Query for smaller screens */
 @media (max-width: 768px) {
   .features .features_container .features_box {

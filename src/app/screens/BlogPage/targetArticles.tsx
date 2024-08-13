@@ -17,7 +17,7 @@ import {
 import { verifiedMemberData } from "../../apiServices/verify";
 
 export function TargetArticles(props: any) {
-  const { setArticlesRebuild } = props;
+  //const { setArticlesRebuild } = props;
   /**HANDLERS */
   const targetLikeHandler = async (e: any) => {
     try {
@@ -30,7 +30,7 @@ export function TargetArticles(props: any) {
       });
       assert.ok(like_result, Definer.general_err1);
       await sweetTopSmallSuccessAlert("success", 700, false);
-      setArticlesRebuild(new Date());
+      // setArticlesRebuild(new Date());
     } catch (err: any) {
       console.log(err);
       sweetErrorHandling(err).then();
@@ -47,8 +47,8 @@ export function TargetArticles(props: any) {
         {props.targetBoArticles?.map((article: BoArticle) => {
           const art_image_url = article?.art_image
             ? `${serverApi}/${article.art_image}`
-            : "/icons/odamcha.svg";
-
+            : "background/cute_girl.jpg";
+          console.log("rasmkemadi:: ", art_image_url);
           return (
             <Stack className="article_wrapper">
               <Link
@@ -63,7 +63,7 @@ export function TargetArticles(props: any) {
                 <Box className={"all_article_container"}>
                   <Box alignItems={"center"} display={"flex"}>
                     <img
-                      src={"/icons/default_user1.svg"}
+                      src={"/background/cute_girl.jpg"}
                       width={"60px"}
                       style={{
                         borderRadius: "20%",
@@ -93,7 +93,7 @@ export function TargetArticles(props: any) {
                       style={{ width: "100%", height: "auto" }}
                     >
                       <Box className="article_share_main">
-                        <span> {moment().format("YY-MM-DD HH:mm")}</span>
+                        {/* <span> {moment().format("YY-MM-DD HH:mm")}</span> */}
                         <Checkbox
                           sx={{ ml: "40px" }}
                           icon={<FavoriteBorder />}

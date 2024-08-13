@@ -44,7 +44,7 @@ export function BlogPage(props: any) {
     {
       bo_id: "all",
       page: 1,
-      limit: 5,
+      limit: 4,
     }
   );
   const [articlesRebuild, setArticlesRebuild] = useState<Date>(new Date());
@@ -55,7 +55,7 @@ export function BlogPage(props: any) {
       .getTargetArticles(searchArticlesObj)
       .then((data) => setTargetBoArticles(data))
       .catch((err) => console.log(err));
-  }, [searchArticlesObj, articlesRebuild]);
+  }, [searchArticlesObj, articlesRebuild, setTargetBoArticles]);
 
   /**HANDLERS */
 
@@ -74,6 +74,8 @@ export function BlogPage(props: any) {
       case "4":
         searchArticlesObj.bo_id = "story";
         break;
+      default:
+        searchArticlesObj.bo_id = "all"; // Default case qo'shild
     }
     setSerachArticlesObj({ ...searchArticlesObj });
     setValue(newValue);

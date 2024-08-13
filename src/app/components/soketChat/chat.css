@@ -1,0 +1,101 @@
+.chat_frame {
+  width: 330px;
+  height: 500px;
+
+  display: flex;
+  flex-direction: column;
+  background: #bfe2fd;
+  border: 1px solid #fff;
+  border-radius: 34px;
+  /* background-color: red; */
+}
+.chat_frame .chat_top {
+  align-items: center;
+  border-bottom: 1px solid hsla(0, 0%, 89%, 0.83);
+  /* color: #000; */
+  color: #007665;
+  display: flex;
+  font-family: Poppins;
+  font-size: 25 px;
+  font-style: normal;
+  font-weight: 600;
+  height: 94px;
+  justify-content: center;
+  line-height: 54px;
+  width: 100%;
+}
+.chat_content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 400px;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding: 17px;
+  position: relative;
+  width: 100%;
+  color: #000;
+
+  /* overflow-y: scroll; */
+}
+.chat_content .chat_main {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  /* height: auto; */
+  /* 
+  background-color: rebeccapurple; */
+  position: relative;
+  width: 100%;
+}
+.chat_content .chat_main::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.chat_main .msg_left {
+  background: hsla(187, 65%, 45%, 0.83);
+  border-radius: 20px 20px 20px 0;
+  color: #fff;
+  display: flex;
+  height: auto;
+  margin-left: 10px;
+  padding: 9px;
+  width: auto;
+}
+.chat_frame .chat_bott {
+  align-items: center;
+  border-top: 1px solid hsla(0, 0%, 89%, 0.83);
+  display: flex;
+  height: 94px;
+  padding: 0 5px;
+  justify-content: center;
+  width: 100%;
+}
+.chat_bott .msg_input {
+  align-items: center;
+  background: #f7f7f7;
+  border: none;
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  height: 50px;
+  line-height: 24px;
+  outline-color: #257677;
+  padding: 20px;
+  width: 276px;
+}
+.chat_bott .send_msg_btn {
+  align-items: center;
+  background: linear-gradient(180deg, #55a99d, #007665);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  margin-left: 14px;
+  width: 40px;
+}

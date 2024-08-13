@@ -2,7 +2,7 @@ import { Box, Button, Container, Stack } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "../../css/shop.css";
-
+import { TargetArticles } from "../BlogPage/targetArticles";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
@@ -40,6 +40,7 @@ import {
 } from "../../../lib/sweetAlert";
 import { verifiedMemberData } from "../../apiServices/verify";
 import { ShopHeader } from "./shopheader";
+import TopArticles from "../HomePage/topArticles";
 
 /** REDUX Slice */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -396,7 +397,8 @@ export function AllShop(props: any) {
               <span>__Testimonials__ </span>
             </h1>
           </Stack>
-          <Stack
+          <TopArticles />
+          {/* <Stack
             flexDirection={"row"}
             display={"flex"}
             justifyContent={"space-between"}
@@ -425,12 +427,12 @@ export function AllShop(props: any) {
                 </Box>
               );
             })}
-          </Stack>
+          </Stack> */}
         </Stack>
       </Container>
       <Container>
         <Stack
-          sx={{ mt: "60px" }}
+          sx={{ mt: "-400px" }}
           style={{
             display: "flex",
             flexDirection: "column",

@@ -10,6 +10,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import "./index.css";
 
 import theme from "./app/MaterialTheme/index"; //this
+import { SocketContext, socket } from "./app/context/socket";
 
 //const container = document.getElementById("root")!;
 //const root = createRoot(container);
@@ -19,7 +20,9 @@ ReactDOM.render(
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <App />
+        <SocketContext.Provider value={socket}>
+          <App />
+        </SocketContext.Provider>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,

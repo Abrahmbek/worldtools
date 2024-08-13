@@ -5,10 +5,11 @@ import { Switch } from "react-router-dom";
 import "./App.css";
 import "./app/css/navbar.css";
 import "./app/css/footer.css";
-
+// import { themeSettings } from "../theme";
+import { createTheme } from "@mui/material/styles";
 import { Box, Container, Stack } from "@mui/material";
 import { HomePage } from "./app/screens/HomePage/index"; //this
-
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { BlogPage } from "./app/screens/BlogPage/index";
 import { OrderPage } from "./app/screens/OrderPage/index";
 import { Contact_usPage } from "./app/screens/Contact-usPage/index";
@@ -29,6 +30,9 @@ import {
 } from "./lib/sweetAlert";
 import { CartItem } from "./types/others";
 import { Product } from "./types/product";
+import SocketChats from "./app/components/soketChat/chattingSoket";
+import "./app/css/chatApp.css";
+import theme from "./app/MaterialTheme";
 function App() {
   /**INITIALIZATIONS */
   const [verifiedMemberData, setverifiedMemberData] = useState<Member | null>(
@@ -59,6 +63,14 @@ function App() {
       setverifiedMemberData(member_data);
     }
   }, [signUpOpen, loginOpen]);
+
+  const [isFormVisible, setIsFormVisible] = useState(false);
+
+  /**HANDLERS */
+
+  const toggleHnadler = () => {
+    setIsFormVisible(!isFormVisible);
+  };
 
   /**HANDLERS */
   const handleSignUpOpen = () => setSignUpOpen(true);
@@ -151,97 +163,127 @@ function App() {
   };
 
   return (
-    <Router>
-      {main_path === "/" ? (
-        <NavbarHome
-          SetPath={SetPath}
-          handleLoginOpen={handleLoginOpen}
-          handleSignUpOpen={handleSignUpOpen}
-          verifiedMemberData={verifiedMemberData}
-          anchorEl={anchorEl}
-          open={open}
-          handleLogOutClick={handleLogOutClick}
-          handleCloseLogOut={handleCloseLogOut}
-          handleLogoutRequest={handleLogoutRequest}
-          cartItems={cartItems}
-          onAdd={onAdd}
-          onRemove={onRemove}
-          onDelete={onDelete}
-          onDeleteAll={onDeleteAll}
-          setOrderRebuild={setOrderRebuild}
-        />
-      ) : main_path.includes("/shop") ? (
-        <NavbarProduct
-          SetPath={SetPath}
-          handleLoginOpen={handleLoginOpen}
-          handleSignUpOpen={handleSignUpOpen}
-          verifiedMemberData={verifiedMemberData}
-          anchorEl={anchorEl}
-          open={open}
-          handleLogOutClick={handleLogOutClick}
-          handleCloseLogOut={handleCloseLogOut}
-          handleLogoutRequest={handleLogoutRequest}
-          cartItems={cartItems}
-          onAdd={onAdd}
-          onRemove={onRemove}
-          onDelete={onDelete}
-          onDeleteAll={onDeleteAll}
-          setOrderRebuild={setOrderRebuild}
-        />
-      ) : (
-        <NavbarOther
-          SetPath={SetPath}
-          handleLoginOpen={handleLoginOpen}
-          handleSignUpOpen={handleSignUpOpen}
-          verifiedMemberData={verifiedMemberData}
-          anchorEl={anchorEl}
-          open={open}
-          handleLogOutClick={handleLogOutClick}
-          handleCloseLogOut={handleCloseLogOut}
-          handleLogoutRequest={handleLogoutRequest}
-          cartItems={cartItems}
-          onAdd={onAdd}
-          onRemove={onRemove}
-          onDelete={onDelete}
-          onDeleteAll={onDeleteAll}
-          setOrderRebuild={setOrderRebuild}
-        />
-      )}
+    <div className="app">
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
 
-      <Switch>
-        <Route path="/shop">
-          <ShopPage onAdd={onAdd} />
-        </Route>
-        <Route path="/member-page">
-          <MembersPage />
-        </Route>
-        <Route path="/blog">
-          <BlogPage />
-        </Route>
-        <Route path="/contact_us">
-          <Contact_usPage />
-        </Route>
-        <Route path="/order">
-          <OrderPage
-            orderRebuild={orderRebuild}
-            setOrderRebuild={setOrderRebuild}
+        <Router>
+          {main_path === "/" ? (
+            <NavbarHome
+              SetPath={SetPath}
+              handleLoginOpen={handleLoginOpen}
+              handleSignUpOpen={handleSignUpOpen}
+              verifiedMemberData={verifiedMemberData}
+              anchorEl={anchorEl}
+              open={open}
+              handleLogOutClick={handleLogOutClick}
+              handleCloseLogOut={handleCloseLogOut}
+              handleLogoutRequest={handleLogoutRequest}
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              onDelete={onDelete}
+              onDeleteAll={onDeleteAll}
+              setOrderRebuild={setOrderRebuild}
+            />
+          ) : main_path.includes("/shop") ? (
+            <NavbarProduct
+              SetPath={SetPath}
+              handleLoginOpen={handleLoginOpen}
+              handleSignUpOpen={handleSignUpOpen}
+              verifiedMemberData={verifiedMemberData}
+              anchorEl={anchorEl}
+              open={open}
+              handleLogOutClick={handleLogOutClick}
+              handleCloseLogOut={handleCloseLogOut}
+              handleLogoutRequest={handleLogoutRequest}
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              onDelete={onDelete}
+              onDeleteAll={onDeleteAll}
+              setOrderRebuild={setOrderRebuild}
+            />
+          ) : (
+            <NavbarOther
+              SetPath={SetPath}
+              handleLoginOpen={handleLoginOpen}
+              handleSignUpOpen={handleSignUpOpen}
+              verifiedMemberData={verifiedMemberData}
+              anchorEl={anchorEl}
+              open={open}
+              handleLogOutClick={handleLogOutClick}
+              handleCloseLogOut={handleCloseLogOut}
+              handleLogoutRequest={handleLogoutRequest}
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              onDelete={onDelete}
+              onDeleteAll={onDeleteAll}
+              setOrderRebuild={setOrderRebuild}
+            />
+          )}
+          <div className="chatForm">
+            {isFormVisible ? (
+              <span className="message_icon">
+                <SocketChats />
+              </span>
+            ) : null}
+
+            <span className="chat_btn">
+              {isFormVisible ? (
+                <img
+                  src="/chat/cancel_btn.png"
+                  alt=""
+                  onClick={toggleHnadler}
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <img
+                  src="/chat/chat.png"
+                  alt=""
+                  onClick={toggleHnadler}
+                  style={{ cursor: "pointer" }}
+                />
+              )}
+            </span>
+          </div>
+          <Switch>
+            <Route path="/shop">
+              <ShopPage onAdd={onAdd} />
+            </Route>
+            <Route path="/member-page">
+              <MembersPage />
+            </Route>
+            <Route path="/blog">
+              <BlogPage />
+            </Route>
+            <Route path="/contact_us">
+              <Contact_usPage />
+            </Route>
+            <Route path="/order">
+              <OrderPage
+                orderRebuild={orderRebuild}
+                setOrderRebuild={setOrderRebuild}
+              />
+            </Route>
+            <Route path="/">
+              <HomePage />
+            </Route>
+          </Switch>
+
+          <Footer />
+          <AuthanticationModal
+            loginOpen={loginOpen}
+            handleLoginOpen={handleLoginOpen}
+            handleLoginClose={handleLoginClose}
+            signUpOpen={signUpOpen}
+            handleSignUpOpen={handleSignUpOpen}
+            handleSignUpClose={handleSignUpClose}
           />
-        </Route>
-        <Route path="/">
-          <HomePage />
-        </Route>
-      </Switch>
-
-      <Footer />
-      <AuthanticationModal
-        loginOpen={loginOpen}
-        handleLoginOpen={handleLoginOpen}
-        handleLoginClose={handleLoginClose}
-        signUpOpen={signUpOpen}
-        handleSignUpOpen={handleSignUpOpen}
-        handleSignUpClose={handleSignUpClose}
-      />
-    </Router>
+        </Router>
+      </ThemeProvider>
+    </div>
   );
 }
 

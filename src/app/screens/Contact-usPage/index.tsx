@@ -8,6 +8,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FaSquareInstagram } from "react-icons/fa6";
 import { IoLogoYoutube } from "react-icons/io";
 import "../../css/contact.css";
+import { Height } from "@mui/icons-material";
 
 export function Contact_usPage() {
   return (
@@ -89,8 +90,11 @@ export function Contact_usPage() {
               </ul>
             </Box>
           </Box>
-          <Box className="container_form">
-            <form className="form">
+          <Box
+            className="container_form"
+            style={{ marginLeft: "-120px", width: "35rem", height: "30rem" }}
+          >
+            <form className="form" style={{ marginLeft: "-20px" }}>
               <h2>Send Message</h2>
               <Box className="input_box">
                 <input type="text" name="" />

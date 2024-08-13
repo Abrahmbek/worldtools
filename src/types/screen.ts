@@ -16,7 +16,7 @@ export interface AppRootState {
 export interface HomePageState {
   topSaleShop: Shop[];
   newArrival: Product[];
-  bestBoArticles: BoArticle[];
+  bestArticles: BoArticle[];
   trendBoArticles: BoArticle[];
 }
 

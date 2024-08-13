@@ -10,11 +10,16 @@ export const retrieveNewArrivel = createSelector(
   selectHomePage,
   (HomePage) => HomePage.newArrival
 );
-export const retrieveBestBoArticle = createSelector(
-  selectHomePage,
-  (HomePage) => HomePage.bestBoArticles
-);
+// export const retrieveBestBoArticle = createSelector(
+//   selectHomePage,
+//   (HomePage) => HomePage.bestBoArticles
+// );
 export const retrieveTrendBoArticle = createSelector(
   selectHomePage,
   (HomePage) => HomePage.trendBoArticles
+);
+
+export const retrieveBestArticles = createSelector(
+  selectHomePage,
+  (HomePage) => HomePage.bestArticles
 );

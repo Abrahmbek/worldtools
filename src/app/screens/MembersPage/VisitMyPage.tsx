@@ -239,7 +239,7 @@ export function VisitMyPage(props: any) {
                     component={() => (
                       <div
                         className={`menu_box ${value}`}
-                        onClick={() => setValue("2")}
+                        onClick={() => setValue("1")}
                       >
                         <img src="/icons/Pencil.svg" alt="" />
                         <span style={{ cursor: "pointer" }}>My Articles</span>

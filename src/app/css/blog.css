@@ -58,6 +58,7 @@
   margin: 1px;
   height: 350px;
   margin-top: 15px;
+  margin-left: 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

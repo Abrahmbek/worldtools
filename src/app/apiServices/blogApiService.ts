@@ -16,7 +16,9 @@ class CommunityApiService {
     this.path = serverApi;
   }
 
-  public async getTargetArticles(data: SearchArticlesObj) {
+  public async getTargetArticles(
+    data: SearchArticlesObj
+  ): Promise<BoArticle[]> {
     try {
       let url = `/community/target?bo_id=${data.bo_id}&page=${data.page}&limit=${data.limit}`;
       if (data.order) url += `&order=${data.order}`;
@@ -75,7 +77,7 @@ class CommunityApiService {
     }
   }
 
-  public async uploadImageToServer(image: any) {
+  public async uploadImageToServer(image: any): Promise<string> {
     try {
       let formData = new FormData();
       formData.append("community_image", image);
@@ -100,7 +102,7 @@ class CommunityApiService {
     }
   }
 
-  public async createArticle(data: BoArticleInput) {
+  public async createArticle(data: BoArticleInput): Promise<BoArticle> {
     try {
       const result = await axios.post(this.path + "/community/create", data, {
         withCredentials: true,

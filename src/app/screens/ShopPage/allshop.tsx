@@ -392,47 +392,17 @@ export function AllShop(props: any) {
             alignItems: "center",
           }}
         >
-          <Stack className="heading_content" sx={{ mt: "-1rem" }}>
+          <Stack className="heading_content" sx={{ mt: "-5rem" }}>
             <h1>
               <span>__Testimonials__ </span>
             </h1>
           </Stack>
           <TopArticles />
-          {/* <Stack
-            flexDirection={"row"}
-            display={"flex"}
-            justifyContent={"space-between"}
-            width={"100%"}
-          >
-            {Array.from(Array(4).keys()).map((ele, index) => {
-              return (
-                <Box className={"review_box"} key={index}>
-                  <Box display={"flex"} justifyContent={"center"}>
-                    <img
-                      src={"/background/cute_girl.jpg"}
-                      alt=""
-                      className={"review_img"}
-                    />
-                  </Box>
-                  <span className={"review_name"}>{chosenShop?.mb_nick}</span>
-                  <span className={"review_prof"}>{chosenShop?.mb_nick}</span>
-                  <p className={"review_desc"}>{chosenShop?.mb_description}</p>
-                  <div className={"review_stars"}>
-                    <StarIcon style={{ color: "#F2BD57" }} />
-                    <StarIcon style={{ color: "#F2BD57" }} />
-                    <StarIcon style={{ color: "#F2BD57" }} />
-                    <StarIcon style={{ color: "whitesmoke" }} />
-                    <StarIcon style={{ color: "whitesmoke" }} />
-                  </div>
-                </Box>
-              );
-            })}
-          </Stack> */}
         </Stack>
       </Container>
       <Container>
         <Stack
-          sx={{ mt: "-400px" }}
+          sx={{ mt: "-100px", mb: "30px" }}
           style={{
             display: "flex",
             flexDirection: "column",

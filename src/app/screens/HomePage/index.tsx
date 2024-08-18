@@ -84,6 +84,3 @@ export function HomePage() {
     </div>
   );
 }
-// function setBestArticles(data: BoArticle[]): any {
-//   throw new Error("Function not implemented.");
-// }

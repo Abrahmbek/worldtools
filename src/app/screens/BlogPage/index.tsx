@@ -55,35 +55,66 @@ export function BlogPage(props: any) {
       .getTargetArticles(searchArticlesObj)
       .then((data) => setTargetBoArticles(data))
       .catch((err) => console.log(err));
-  }, [searchArticlesObj, articlesRebuild, setTargetBoArticles]);
+  }, [searchArticlesObj, articlesRebuild]);
 
   /**HANDLERS */
 
+  // const handleChange = (event: any, newValue: string) => {
+  //   searchArticlesObj.page = 1;
+  //   switch (newValue) {
+  //     case "1":
+  //       searchArticlesObj.bo_id = "all";
+  //       break;
+  //     case "2":
+  //       searchArticlesObj.bo_id = "celebrity";
+  //       break;
+  //     case "3":
+  //       searchArticlesObj.bo_id = "evaluation";
+  //       break;
+  //     case "4":
+  //       searchArticlesObj.bo_id = "story";
+  //       break;
+  //     default:
+  //       searchArticlesObj.bo_id = "all"; // Default case qo'shild
+  //   }
+  //   setSerachArticlesObj({ ...searchArticlesObj });
+  //   setValue(newValue);
+  // };
+  // const handlePaginationChange = (event: any, value: number) => {
+  //   searchArticlesObj.page = value;
+  //   setSerachArticlesObj({ ...searchArticlesObj });
+  // };
+
   const handleChange = (event: any, newValue: string) => {
-    searchArticlesObj.page = 1;
+    const updatedSearchArticlesObj = { ...searchArticlesObj };
+    updatedSearchArticlesObj.page = 1;
     switch (newValue) {
       case "1":
-        searchArticlesObj.bo_id = "all";
+        updatedSearchArticlesObj.bo_id = "all";
         break;
       case "2":
-        searchArticlesObj.bo_id = "celebrity";
+        updatedSearchArticlesObj.bo_id = "celebrity";
         break;
       case "3":
-        searchArticlesObj.bo_id = "evaluation";
+        updatedSearchArticlesObj.bo_id = "evaluation";
         break;
       case "4":
-        searchArticlesObj.bo_id = "story";
+        updatedSearchArticlesObj.bo_id = "story";
         break;
       default:
-        searchArticlesObj.bo_id = "all"; // Default case qo'shild
+        updatedSearchArticlesObj.bo_id = "all";
     }
-    setSerachArticlesObj({ ...searchArticlesObj });
+    setSerachArticlesObj(updatedSearchArticlesObj);
     setValue(newValue);
   };
-  const handlePaginationChange = (event: any, value: number) => {
+  const handlePaginationChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
     searchArticlesObj.page = value;
     setSerachArticlesObj({ ...searchArticlesObj });
   };
+
   return (
     <div className={"community_page"}>
       <div className={"community_frame"}>

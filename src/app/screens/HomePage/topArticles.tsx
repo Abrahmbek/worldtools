@@ -51,9 +51,10 @@ const TopArticles = (props: any) => {
   return (
     <div
       className="articles_frame"
-      onClick={() => props.setPath(`/member-page}`)}
+      // onClick={() => props.setPath(`/member-page}`)}
+      style={{ marginBottom: "-270px" }}
     >
-      <Container sx={{ overflow: "hidden" }}>
+      <Container sx={{ overflow: "hidden" }} style={{ marginBottom: "-200px" }}>
         <Stack className="articles_main">
           <Box className="artTitle">
             <span className="article_category_title">{"mostly_read"}</span>

@@ -17,7 +17,7 @@ import {
 import { verifiedMemberData } from "../../apiServices/verify";
 
 export function TargetArticles(props: any) {
-  //const { setArticlesRebuild } = props;
+  const { setArticlesRebuild } = props;
   /**HANDLERS */
   const targetLikeHandler = async (e: any) => {
     try {
@@ -25,12 +25,12 @@ export function TargetArticles(props: any) {
 
       const memberService = new MemberApiService();
       const like_result = await memberService.memberLikeTarget({
-        like_ref_id: e.target.id,
+        like_ref_id: e.currentTarget.id, // change target
         group_type: "community",
       });
       assert.ok(like_result, Definer.general_err1);
       await sweetTopSmallSuccessAlert("success", 700, false);
-      // setArticlesRebuild(new Date());
+      setArticlesRebuild(new Date());
     } catch (err: any) {
       console.log(err);
       sweetErrorHandling(err).then();
@@ -47,7 +47,7 @@ export function TargetArticles(props: any) {
         {props.targetBoArticles?.map((article: BoArticle) => {
           const art_image_url = article?.art_image
             ? `${serverApi}/${article.art_image}`
-            : "background/cute_girl.jpg";
+            : "/auth/default_user1.svg";
           console.log("rasmkemadi:: ", art_image_url);
           return (
             <Stack className="article_wrapper">
@@ -93,7 +93,16 @@ export function TargetArticles(props: any) {
                       style={{ width: "100%", height: "auto" }}
                     >
                       <Box className="article_share_main">
-                        {/* <span> {moment().format("YY-MM-DD HH:mm")}</span> */}
+                        <span
+                          style={{
+                            marginLeft: "-100px",
+                            display: "flex",
+                            position: "absolute",
+                          }}
+                        >
+                          {" "}
+                          {moment().format("YY-MM-DD HH:mm")}
+                        </span>
                         <Checkbox
                           sx={{ ml: "40px" }}
                           icon={<FavoriteBorder />}

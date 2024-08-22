@@ -5,7 +5,7 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-//import PausedOrders from "../../components/order/pausedOrder"; //this
+import PausedOrders from "../../components/order/pausedOrder"; //this
 import ProcessOrders from "../../components/order/processOrder";
 import FinishedOrders from "../../components/order/finishedOrder"; //this
 
@@ -89,7 +89,7 @@ export function OrderPage(props: any) {
               </Box>
             </Box>
             <Stack className={"order_main_content"}>
-              {/* <PausedOrders setOrderRebuild={props.setOrderRebuild} /> */}
+              <PausedOrders setOrderRebuild={props.setOrderRebuild} />
               <ProcessOrders setOrderRebuild={props.setOrderRebuild} />
               <FinishedOrders setOrderRebuild={props.setOrderRebuild} />
             </Stack>

@@ -1,9 +1,18 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
-import { Box, Container, Fab, Stack, TextField } from "@mui/material";
+// import Modal from "@mui/material";
+// import Backdrop from "@mui/material";
+// import Fade from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Container,
+  Fab,
+  Fade,
+  Modal,
+  Stack,
+  TextField,
+} from "@mui/material";
 import styled from "styled-components";
 import LoginIcon from "@mui/icons-material/Login";
 import "../../css/login._form.css";
@@ -157,7 +166,6 @@ export default function AuthenticationModal(props: any) {
           BackdropProps={{
             timeout: 500,
           }}
-          
         >
           <Fade in={props.loginOpen}>
             <Stack className={"container_form"}>
